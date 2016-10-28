@@ -76,21 +76,31 @@ for html in htmls:
         #print abstract
         publish_date = time.strftime('%Y-%m-%d %H:%M:%S')
         #print content
-        #print 'title:', title
-        #print 'portrait:', portrait
-        #print 'slug:', slug
-        #print 'abstract:', abstract
-        #print 'publish_date:', publish_date
-        #print 'weight:', weight
-        #print 'visible:', visible
-        #print 'author_id:', author_id
+        print 'title:', title
+        print 'portrait:', portrait
+        print 'slug:', slug
+        print 'abstract:', abstract
+        print 'publish_date:', publish_date
+        print 'weight:', weight
+        print 'visible:', visible
+        print 'author_id:', author_id
         with open('modified/' + html, 'w') as dest:
             dest.write(content)
         con = mdb.connect(user='mingdatrade', passwd='trade@mingDA123', db='bestfinds')
         with con:
             cur = con.cursor()
+            #sql = 'select id from blog_blog'
+            #cur.execute(sql)
+            #for (id_no, ) in cur:
+            #    sql = 'insert blog_blogtag set (name, blog_id) value("apparel", "%s")'
+            #    cur
             sql = ('insert blog_blog (title, portrait, slug, abstract, content,'
                    ' publish_date, weight, visible, author_id) value("%s", "%s", "%s"'
                    ', "%s", "%s", "%s", "%s", "%s", "%s")')
             content = con.escape_string(content)
             cur.execute(sql % (title, portrait, slug, abstract, content, publish_date, weight, visible, author_id))
+            sql = 'select id from blog_blog where slug = "%s"'
+            cur.execute(sql % slug)
+            (id_no, ) = cur.fetchone()
+            sql = 'insert blog_blogtag (name, blog_id) value("apparel", "%s")'
+            cur.execute(sql % id_no)
