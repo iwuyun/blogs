@@ -89,18 +89,19 @@ for html in htmls:
         con = mdb.connect(user='mingdatrade', passwd='trade@mingDA123', db='bestfinds')
         with con:
             cur = con.cursor()
-            #sql = 'select id from blog_blog'
-            #cur.execute(sql)
-            #for (id_no, ) in cur:
-            #    sql = 'insert blog_blogtag set (name, blog_id) value("apparel", "%s")'
-            #    cur
-            sql = ('insert blog_blog (title, portrait, slug, abstract, content,'
-                   ' publish_date, weight, visible, author_id) value("%s", "%s", "%s"'
-                   ', "%s", "%s", "%s", "%s", "%s", "%s")')
-            content = con.escape_string(content)
-            cur.execute(sql % (title, portrait, slug, abstract, content, publish_date, weight, visible, author_id))
-            sql = 'select id from blog_blog where slug = "%s"'
-            cur.execute(sql % slug)
-            (id_no, ) = cur.fetchone()
-            sql = 'insert blog_blogtag (name, blog_id) value("apparel", "%s")'
-            cur.execute(sql % id_no)
+            sql = 'select id from blog_blog'
+            cur.execute(sql)
+            ids = [d for d in cur]
+            for id_no in ids:
+                sql = 'insert blog_blogtag set (name, blog_id) value("apparel", "%s")'
+                cur.execute(sql % id_no)
+            #sql = ('insert blog_blog (title, portrait, slug, abstract, content,'
+            #       ' publish_date, weight, visible, author_id) value("%s", "%s", "%s"'
+            #       ', "%s", "%s", "%s", "%s", "%s", "%s")')
+            #content = con.escape_string(content)
+            #cur.execute(sql % (title, portrait, slug, abstract, content, publish_date, weight, visible, author_id))
+            #sql = 'select id from blog_blog where slug = "%s"'
+            #cur.execute(sql % slug)
+            #(id_no, ) = cur.fetchone()
+            #sql = 'insert blog_blogtag (name, blog_id) value("apparel", "%s")'
+            #cur.execute(sql % id_no)
